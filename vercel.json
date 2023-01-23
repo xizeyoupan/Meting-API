@@ -1,0 +1,17 @@
+{
+    "functions": {
+        "api/Meting.php": {
+            "runtime": "vercel-php@0.5.2"
+        }
+    },
+    "rewrites": [
+        {
+            "source": "/api/Meting.php/(.*)",
+            "destination": "/api/Meting.php"
+        },
+        {
+            "source": "/api(.*)",
+            "destination": "/api/index.js"
+        }
+    ]
+}

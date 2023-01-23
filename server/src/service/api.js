@@ -16,6 +16,7 @@ export default async (ctx) => {
   const type = query.type || 'search'
   const id = query.id || 'hello'
   const token = query.token || query.auth || 'token'
+  const origin = ctx.request.origin
 
   // 2. 校验参数
   if (!['netease', 'tencent', 'kugou', 'xiami', 'baidu', 'kuwo'].includes(server)) {
@@ -36,7 +37,14 @@ export default async (ctx) => {
   let data = cache.get(`${server}/${type}/${id}`)
   if (data === undefined) {
     ctx.set('x-cache', 'miss')
-    const url = `${config.meting.api}/api?server=${server}&type=${type}&id=${id}`
+
+    let url;
+    if (config.meting.api) {
+      url = `${config.meting.api}/?server=${server}&type=${type}&id=${id}`
+    } else {
+      url = `${origin}/api/Meting.php/?server=${server}&type=${type}&id=${id}`
+    }
+
     data = await got(url).json()
       .then(res => {
         if (!res.success) {
@@ -97,9 +105,9 @@ export default async (ctx) => {
     return {
       title: x.name,
       author: x.artist.join(' / '),
-      url: `${config.meting.url}/api?server=${server}&type=url&id=${x.url_id}&auth=${auth(server, 'url', x.url_id)}`,
-      pic: `${config.meting.url}/api?server=${server}&type=pic&id=${x.pic_id}&auth=${auth(server, 'pic', x.pic_id)}`,
-      lrc: `${config.meting.url}/api?server=${server}&type=lrc&id=${x.lyric_id}&auth=${auth(server, 'lrc', x.lyric_id)}`
+      url: `${origin}/api?server=${server}&type=url&id=${x.url_id}&auth=${auth(server, 'url', x.url_id)}`,
+      pic: `${origin}/api?server=${server}&type=pic&id=${x.pic_id}&auth=${auth(server, 'pic', x.pic_id)}`,
+      lrc: `${origin}/api?server=${server}&type=lrc&id=${x.lyric_id}&auth=${auth(server, 'lrc', x.lyric_id)}`
     }
   })
 }

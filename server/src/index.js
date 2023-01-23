@@ -6,7 +6,7 @@ import errors from './middleware/errors.js'
 import apiService from './service/api.js'
 import config from './config.js'
 
-const app = new Koa()
+const app = new Koa({ proxy: true })
 
 app.use(cors())
 app.use(requestLogger)
@@ -16,4 +16,6 @@ const router = new Router()
 router.get(`${config.http.prefix}/api`, apiService)
 app.use(router.routes()).use(router.allowedMethods())
 
-app.listen(3000)
+app.listen(process.env.PORT || 3000)
+
+export default app;

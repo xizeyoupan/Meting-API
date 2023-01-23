@@ -1,14 +1,14 @@
 {
   "name": "@meting/server",
   "version": "1.0.0",
-  "main": "src/index.js",
+  "main": "server/src/index.js",
   "type": "module",
   "author": "metowolf",
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "node src/index.js",
-    "dev": "nodemon src/index.js",
+    "start": "node server/src/index.js",
+    "dev": "nodemon server/src/index.js",
     "lint": "eslint ."
   },
   "dependencies": {
