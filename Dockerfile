@@ -2,14 +2,30 @@ FROM alpine:3 as checkouter
 
 RUN apk --no-cache add git
 
-RUN git clone https://github.com/metowolf/Meting-API.git /mteing-api \
-    && cd /mteing-api \
+RUN git clone https://github.com/metowolf/Meting-API.git /meting-api \
+    && cd /meting-api \
     && git checkout d7782b5
 
+WORKDIR /meting-api
+
+RUN sed -i 's/daemon off/daemon on/g' api/root/usr/local/bin/docker-entrypoint.sh \
+    && echo -e "\nnode src/index.js" >> api/root/usr/local/bin/docker-entrypoint.sh \
+    && sed '1a id' -i api/root/usr/local/bin/docker-entrypoint.sh \
+    && sed -i 's/listen 80/listen 8080/g' api/root/etc/nginx/conf.d/default.conf \
+    && sed -i 's/listen \[::\]:80/listen \[::\]:8080/g' api/root/etc/nginx/conf.d/default.conf
 
 FROM node:17-alpine as prod
 
-COPY --from=0 /mteing-api /mteing-api
+ARG UID
+ARG GID
+
+ENV UID=${UID:-1010}
+ENV GID=${GID:-1010}
+
+RUN addgroup -g ${GID} --system meting \
+    && adduser -G meting --system -D -s /bin/sh -u ${UID} meting
+
+COPY --from=0 /meting-api /meting-api
 
 RUN apk update && apk add openrc \
     php8 \
@@ -26,7 +42,7 @@ RUN apk update && apk add openrc \
 # openrc
 RUN mkdir -p /run/openrc && touch /run/openrc/softlevel
 
-RUN cp -rp /mteing-api/api/root/var/* /var/
+RUN cp -rp /meting-api/api/root/var/* /var/
 
 # composer
 RUN cd /var/www/meting \ 
@@ -39,21 +55,24 @@ RUN chown -R nginx /var/log/nginx
 # clean
 RUN apk del composer && rm -rf /var/cache/apk/*
 
-RUN cp -rp /mteing-api/api/root/etc/* /etc \
-    && cp -rp /mteing-api/api/root/usr/* /usr
+RUN cp -rp /meting-api/api/root/etc/* /etc \
+    && cp -rp /meting-api/api/root/usr/* /usr
 
-WORKDIR /mteing-api/server
+WORKDIR /meting-api/server
 
 ARG NODE_ENV
 ENV NODE_ENV ${NODE_ENV:-production}
-ENV METING_API http://127.0.0.1/api
+ENV METING_API http://localhost:8080/api
 
 RUN yarn
-RUN sed -i 's/daemon off/daemon on/g' /usr/local/bin/docker-entrypoint.sh \
-    && echo -e "\nnode src/index.js" >>/usr/local/bin/docker-entrypoint.sh
 
 COPY server/src/config.js src/config.js
 COPY server/src/service/api.js src/service/api.js
+COPY server/src/index.js src/index.js
+
+RUN chown -R meting:meting /var
+RUN chown -R meting:meting /etc/php8
+USER meting
 
 EXPOSE 3000
 

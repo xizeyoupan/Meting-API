@@ -1,13 +1,31 @@
 on:
   workflow_dispatch:
+    inputs:
+      deploy_tag:
+        description: 'Which tag to deploy'
+        required: true
+        type: string
+        default: 'latest'
 
 jobs:
-  publish:
+  checksecret:
+      name: check if dockerhub token is set in github secrets
+      runs-on: ubuntu-latest
+      outputs:
+        is_MY_SECRET_set: ${{ steps.checksecret_job.outputs.is_MY_SECRET_set }}
+      steps:
+        - name: Check whether unity activation requests should be done
+          id: checksecret_job
+          env:
+              MY_SECRET: ${{ secrets.DOCKERHUB_TOKEN }}
+          run: |
+              echo "is_MY_SECRET_set: ${{ env.MY_SECRET != '' }}"
+              echo "::set-output name=is_MY_SECRET_set::${{ env.MY_SECRET != '' }}"
+
+  test-docker:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-        with:
-          path: meting-api
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -15,15 +33,46 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
+      - name: Build docker image
+        uses: docker/build-push-action@v3
+        with:
+          load: true
+          push: false
+          tags: meting-api:${{ inputs.deploy_tag }}
+          context: .
+      
+      - name: Test Docker image
+        run: bash scripts/docker/test-docker.sh
+        env:
+          TAG: ${{ inputs.deploy_tag }}
+      
+      - name: Export Docker image
+        run: docker save meting-api:${{ inputs.deploy_tag }} | gzip -1cf > meting.tar.gz
+
+      - name: Upload Docker image
+        uses: actions/upload-artifact@v3
+        with:
+          name: meting.${{ inputs.deploy_tag }}.tar.gz
+          path: meting.tar.gz
+          retention-days: 1
+
+  release-docker:
+    needs: [test-docker, checksecret]
+    if: needs.checksecret.outputs.is_MY_SECRET_set == 'true'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
       - name: Login to DockerHub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push docker image
+      - name: Push docker image
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/meting-api:latest
-          context: ${{ github.workspace }}/meting-api
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/meting-api:${{ inputs.deploy_tag }}
+          context: .
