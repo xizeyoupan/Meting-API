@@ -36,6 +36,21 @@ docker run -d --name meting -p 3000:3000 intemd/meting-api:latest
 
 在浏览器中打开 http://localhost:3000/api 来进行测试 ✅
 
+在自己服务器部署时，可能需要通过 nginx 反代 nodejs，然后域名访问 `https://api.example.com/meting/api`
+```nginx
+server {
+    location /meting/ {
+        proxy_pass http://127.0.0.1:3000/;
+    }
+}
+```
+
+则需要添加环境变量
+
+```
+docker run -d --name meting -p 3000:3000 -e METING_URL="https://api.example.com/meting" intemd/meting-api:latest
+```
+
 ### 部署到vercel
 
 <a href="https://vercel.com/import/project?template=https://github.com/xizeyoupan/Meting-API"><img src="https://vercel.com/button" height="32"></a>
