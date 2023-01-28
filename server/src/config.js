@@ -7,6 +7,7 @@ export default {
     prefix: process.env.HTTP_PREFIX || ''
   },
   meting: {
+    url: process.env.METING_URL || '',
     api: process.env.METING_API || '', // upstream php api
     token: process.env.METING_TOKEN || 'token'
   }
