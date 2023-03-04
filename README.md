@@ -1,6 +1,6 @@
 # Meting-API
 
-https://m.boochinoob.shop/test
+https://meting-dd.2333332.xyz/test
 
 ## 写在前面
 
@@ -27,14 +27,13 @@ Meting后端的api结构较为复杂，基础是一个[接口](https://github.co
 - 插件系统，编写新接口及音源简单
 
 ## api网址
-
-https://m.boochinoob.shop/api => cloudflare
+https://meting-dd.2333332.xyz/api => Deno Deploy
 
 https://meting-ve.2333332.xyz/api => vercel
 
-https://meting-dd.2333332.xyz/api => Deno Deploy
+https://m.boochinoob.shop/api => cloudflare (deprecated, see below)
 
-可自行测试，如 https://m.boochinoob.shop/test
+可自行测试，如 https://meting-dd.2333332.xyz/test
 
 ## 进度
 
@@ -102,9 +101,15 @@ docker run -d --name meting -p 3000:3000 intemd/meting-api:latest
 
 ### Cloudflare Workers
 
+<details><summary>deprecated</summary>
+
+由于cf会[自动去除x-real-ip以及在headers中加shit](https://developers.cloudflare.com/fundamentals/get-started/reference/http-request-headers/#cf-connecting-ip-in-worker-subrequests)，网易云可能会失效。使用网易云的同学请尝试其他部署方式。
+
 在全球拥有数据中心，提供的域名被阻断，使用自有域名后速度很快。冷启动速度很快。
 
 fork本项目，依次点击actions/publish/run workflow。保持默认即可。待CI构建结束后下载cloudflare-workers.js并解压。在[Workers](https://dash.cloudflare.com)创建一个Service，点右上角Quick edit。把cloudflare-workers.js的内容复制进去deploy即可。
+
+</details>
 
 ### Deno Deploy
 
@@ -296,3 +301,7 @@ https://github.com/honojs/hono
 https://github.com/honojs/node-server
 
 https://github.com/camsong/fetch-jsonp
+
+https://github.com/Binaryify/NeteaseCloudMusicApi
+
+https://github.com/jsososo/QQMusicApi

@@ -5,7 +5,12 @@
   "main": "node.js",
   "scripts": {
     "build:all": "node esbuild.config.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start:node": "node node.js",
+    "start:deno": "deno run --allow-net --allow-env dist/deno.js",
+    "test": "vitest run",
+    "patch": "npm version patch && git push origin master && git push origin --tags",
+    "minor": "npm version minor && git push origin master && git push origin --tags",
+    "major": "npm version major && git push origin master && git push origin --tags"
   },
   "engines": {
     "node": ">=18.0.0"
@@ -15,7 +20,8 @@
   "license": "MIT",
   "devDependencies": {
     "esbuild-plugin-resolve": "^1.0.3",
-    "esbuild-plugin-text-replace": "^1.2.0"
+    "esbuild-plugin-text-replace": "^1.2.0",
+    "vitest": "^0.29.2"
   },
   "dependencies": {
     "@esbuild-plugins/node-globals-polyfill": "^0.2.3",

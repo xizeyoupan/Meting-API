@@ -1,4 +1,6 @@
-const html = `
+import example from "./example.js"
+
+let html = `
 <!DOCTYPE html>
 <html>
 
@@ -14,22 +16,23 @@ const html = `
         var meting_api = 'api?server=:server&type=:type&id=:id&auth=:auth&r=:r';
     </script>
     <script src="https://unpkg.com/@xizeyoupan/meting@latest/dist/Meting.min.js"></script>
+`
 
-    <div>网易单曲
-    <meting-js server="netease" type="song" id="473403185" />
-    </div>
+Object.keys(example).map(provider => {
+    Object.keys(example[provider]).map(type => {
+        if (!example[provider][type].show) return
 
-    <div>网易歌单
-    <meting-js server="netease" type="playlist" id="6907557348" />
+        html += `
+    <div>
+        <p>${provider} ${type}</p>
+        <meting-js server="${provider}" type="${type}" id="${example[provider][type].value}" list-folded=true />
     </div>
+    <br/>
+`
+    })
+})
 
-    <div>qq单曲
-    <meting-js server="tencent" type="song" id="001jDFoN3nXu44" />
-    </div>
-
-    <div>qq歌单
-    <meting-js server="tencent" type="playlist" id="7326220405" />
-    </div>
+html += `
 </body>
 
 </html>

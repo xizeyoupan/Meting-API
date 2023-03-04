@@ -36,6 +36,10 @@ export const get_song_info = async (id, cookie = '') => {
 
     // console.log(res)
 
+    if (!res.songs) {
+        throw res
+    }
+
     res = {
         title: res.songs[0].name,
         author: res.songs[0].ar.reduce((i, v) => ((i ? i + " / " : i) + v.name), ''),

@@ -118,7 +118,7 @@ export const get_song_info = async (id, cookie = '') => {
 
 export const get_pic = async (id, cookie = '') => {
     const info = await get_song_info(id, cookie)
-    return info.pic
+    return info[0].pic
 }
 
 // const res = await get_song_url('002Rnpvi058Qdm');

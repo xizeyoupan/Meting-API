@@ -8,7 +8,7 @@ await esbuild.build({
     entryPoints: ['./app.js'],
     bundle: true,
     format: 'esm',
-    outfile: './dist/cloudflare-workers.js',
+    outfile: './dist/cloudflare-workers-min.js',
     external: [],
     plugins: [
         resolve({
@@ -21,6 +21,24 @@ await esbuild.build({
         NodeModulesPolyfillPlugin(),
     ],
     minify: true,
+});
+
+await esbuild.build({
+    entryPoints: ['./app.js'],
+    bundle: true,
+    format: 'esm',
+    outfile: './dist/cloudflare-workers.js',
+    external: [],
+    plugins: [
+        resolve({
+            crypto: 'crypto-browserify'
+        }),
+        NodeGlobalsPolyfillPlugin({
+            process: true,
+            buffer: true,
+        }),
+        NodeModulesPolyfillPlugin(),
+    ],
 });
 
 await esbuild.build({

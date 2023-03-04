@@ -152,15 +152,27 @@ export const request = async (method, url, data = {}, options) => {
         }
     }
 
-    let res = await fetch(url, settings)
 
-    if (options.crypto === 'eapi') {
-        const _ = await res.arrayBuffer('utf-8')
-        const enc = new TextDecoder()
-        res = JSON.parse(enc.decode(_))
-    } else {
-        res = await res.json()
-    }
+    let res, count = 0
+    do {
+        res = await fetch(url, settings)
+        if (options.crypto === 'eapi') {
+            const _ = await res.arrayBuffer('utf-8')
+            const enc = new TextDecoder()
+            res = JSON.parse(enc.decode(_))
+        } else {
+            res = await res.json()
+        }
+        count++
+        if (count > 1) {
+            console.log(`Request ${count} times.`)
+        }
+        if (count > 5) {
+            console.error(`Max retries exceeded.`)
+            break
+        }
+        await new Promise(resolve => setTimeout(resolve, 100))
+    } while (res.code == -460)  // { code: -460, message: '网络太拥挤，请稍候再试！' }
 
     return res;
 
