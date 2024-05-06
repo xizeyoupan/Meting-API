@@ -40,6 +40,7 @@
 (看起来说的很麻烦，实际看案例就很简单)
 
 请求链接 (歌单): `https://met.api.xiaoguan.fit/api?type=playlist&id=9564899591`
+
 ```json
 [
 ...
@@ -53,6 +54,7 @@
 ...
 ]
 ```
+
 请求链接 (歌曲): `https://met.api.xiaoguan.fit/api?type=song&id=537787665`
 ```json
 [
@@ -65,7 +67,9 @@
     }
 ]
 ```
+
 请求链接 (歌手): `https://met.api.xiaoguan.fit/api?type=artist&id=1049179`
+
 ```json
 [
     {
@@ -78,12 +82,15 @@
 ...
 ]
 ```
+
 请求资源(歌曲的url): `https://met.api.xiaoguan.fit/api?type=url&id=537787665`
+
 返回内容: 跳转到歌曲的音乐商的url
 
 请求资源(歌曲的歌词): `https://met.api.xiaoguan.fit/api?type=lrc&id=537787665`
+
 返回内容: 歌词
 
 请求资源(歌曲的封面): `https://met.api.xiaoguan.fit/api?type=pic&id=537787665`
-返回内容: 
-跳转到歌曲的封面的音乐商的url
+
+返回内容: 跳转到歌曲的封面的音乐商的url
