@@ -1,7 +1,17 @@
 # 事情是这样的
 我的博客使用了 Meting 这个项目作为网易云音乐的 API 调用，但介于那个 API 调用的是别人的网站，每次调用都会把请求发送给其他的网站，就非常的不爽...＞﹏＜
+
 在我的几番周折后，经过是这样的:
-找到了纯供 PHP 调用的无api版本 ==> 找到了可供于api调用的PHP版本 (在vercel部署仅能获取歌词,vercel不支持更老版本的PHP) ==> 找到了用于阿里云FC调用的PHP版本 ==> 最终 找到这个nodejs的现代版本 ==> 用ZUI3重写了前端的测试页面，状态页面，将原版的歌替换为自己的歌单(除了国外的音乐平台)
+
+找到了纯供 PHP 调用的无api版本 ==> 
+
+找到了可供于api调用的PHP版本 (在vercel部署仅能获取歌词,vercel不支持更老版本的PHP) ==> 
+
+找到了用于阿里云FC调用的PHP版本(vercel无法部署,fc未知) ==> 
+
+最终 找到这个nodejs的现代版本 ==> 
+
+用ZUI3重写了前端的测试页面，状态页面，将原版的歌替换为自己的歌单(除了国外的音乐平台)
 
 ## 部署方法，调用方法？
 如果你想直接使用这个具有 ZUI3 重写的前端界面的话，请直接Fork
@@ -71,5 +81,9 @@
 请求资源(歌曲的url): `https://met.api.xiaoguan.fit/api?type=url&id=537787665`
 返回内容: 跳转到歌曲的音乐商的url
 
-请求资源(歌曲的lrc): `https://met.api.xiaoguan.fit/api?type=lrc&id=537787665`
+请求资源(歌曲的歌词): `https://met.api.xiaoguan.fit/api?type=lrc&id=537787665`
 返回内容: 歌词
+
+请求资源(歌曲的封面): `https://met.api.xiaoguan.fit/api?type=pic&id=537787665`
+返回内容: 
+跳转到歌曲的封面的音乐商的url
