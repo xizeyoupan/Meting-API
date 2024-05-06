@@ -1,259 +1,75 @@
-# Meting-API
+# 事情是这样的
+我的博客使用了 Meting 这个项目作为网易云音乐的 API 调用，但介于那个 API 调用的是别人的网站，每次调用都会把请求发送给其他的网站，就非常的不爽...＞﹏＜
+在我的几番周折后，经过是这样的:
+找到了纯供 PHP 调用的无api版本 ==> 找到了可供于api调用的PHP版本 (在vercel部署仅能获取歌词,vercel不支持更老版本的PHP) ==> 找到了用于阿里云FC调用的PHP版本 ==> 最终 找到这个nodejs的现代版本 ==> 用ZUI3重写了前端的测试页面，状态页面，将原版的歌替换为自己的歌单(除了国外的音乐平台)
 
-https://meting-dd.2333332.xyz/test
+## 部署方法，调用方法？
+如果你想直接使用这个具有 ZUI3 重写的前端界面的话，请直接Fork
+另外一提，原作者在这里：(Github@xizeyoupan/Meting-API)[https://github.com/xizeyoupan/Meting-API]
+同时感谢(Github@xizeyoupan)[https://github.com/xizeyoupan] 使用 nodejs 重写了 Meting
 
-## 写在前面
+## 调用方法
+目前支持两类调用 歌单调用与资源调用
+1. 歌单调用
+以下为我提到的歌单调用:
+* 歌单
+* 音乐
+* 歌手
+* 搜索
+以这种形式调用会返回一个json格式，这个json格式包括了三个主要的键值对
+这三个主要的键分别为：
+* pic (封面)
+* url (歌曲的音频url)
+* lrc (歌词)
+值分别为对应的url
 
-Meting后端的基础是一个[接口](https://github.com/metowolf/Meting/blob/master/src/Meting.php)，原作者在此基础上增加了[php后端](https://github.com/metowolf/Meting-API/blob/master/api/root/var/www/meting/public/index.php)，又用node做了一层[wrapper](https://github.com/metowolf/Meting-API/tree/master/server)。
+2. 资源调用
+资源调用，可以获取一个指定id的资源，如：音频链接、歌词链接
+在只需要获取单文件的情况下，这种调用方式非常实用
 
-同时可以发现原作者在docker hub上传了php后端的[镜像](https://hub.docker.com/r/metowolf/meting)，但没有node的镜像（仓库中仍有Dockerfile）。于是重写了一下。
+(看起来说的很麻烦，实际看案例就很简单)
 
-## Feature
-
-- 纯js实现，化简api结构
-- 适配多个PaaS平台，一键部署
-- 采用jsonp解决Tencent系地区限制
-- 插件系统，编写新接口及音源简单
-
-## 进度
-
-|               | server参数名称 | 图片 | 歌词 | url | 单曲/song | 歌单/playlist | 歌手/artist | 搜索/search |
-| ------------- | -------------- | ---- | ---- | --- | --------- | ------------- | ----------- |--------- |
-| 网易云        | netease        | √    | √    | √   | √         | √             | √           |√         |
-| qq音乐        | tencent        | √    | √    | √   | √         | √             | ×           |×         |
-| youtube music | ytmusic        | √    | √⁰   | √   | √         | √             | ×           |×         |
-| spotify       | spotify        | √    | √⁰   | √⁰  | √⁰        | √⁰            | ×           |×         |
-| more..        |                |      |      |     |           |               |             |         |
-
-## 地区限制
-
-### 部署在国外
-
-| 客户端/浏览器访问地区 | 国内 | 国外 |
-| --------------------- | ---- | ---- |
-| 网易云                | √    | √    |
-| qq音乐                | √¹   | ×    |
-| youtube music         | √²   | √    |
-| spotify music         | √²   | √    |
-
-### 部署在国内
-
-| 客户端/浏览器访问地区 | 国内 | 国外 |
-| --------------------- | ---- | ---- |
-| 网易云                | √    | √    |
-| qq音乐                | √    | ×    |
-| youtube music         | √²   | √    |
-| spotify music         | √²   | √    |
-
-⁰youtube和spotify的歌词由 https://github.com/xizeyoupan/syncedlyrics_aio 检索而来，歌词匹配准确度不会特别高。spotify的音乐源由 https://github.com/spotDL/spotify-downloader 检索而来，歌曲匹配准确度不会很高，并且获取url的时间较长。
-
-¹使用jsonp，**需要替换前端插件**， https://cdn.jsdelivr.net/npm/meting@2.0.1/dist/Meting.min.js => https://cdn.jsdelivr.net/npm/@xizeyoupan/meting@latest/dist/Meting.min.js , or 
-https://unpkg.com/meting@2.0.1/dist/Meting.min.js => https://unpkg.com/@xizeyoupan/meting@latest/dist/Meting.min.js
-
-More info https://github.com/xizeyoupan/MetingJS
-
-²见下方参数配置
-
-## 参数配置
-以下参数均由环境变量配置
-
-- YT_API
-  默认的youtube music和spotify的api地址。国内可用性取决于YT_API的连通性。**你需要自己部署youtube music和spotify的api**。[此仓库](https://github.com/xizeyoupan/ytmusic-api-server)提供示例。
-- OVERSEAS
-  用于判断是否部署于国外。设为1会启用qq音乐的jsonp返回，同时需要替换[前端插件](https://github.com/xizeyoupan/MetingJS)，能实现国内访问国外api服务解析qq音乐。部署在国内不用设置这个选项。当部署到vercel上时，此选项自动设为1。
-- PORT
-  api监听端口，也是docker需要映射的端口。默认3000
-- UID
-  用于docker，默认1010
-- GID
-  用于docker，默认1010
-
-## api网址
-仅为示例，不保证稳定性
-
-https://meting-dd.2333332.xyz/api => Deno Deploy
-
-可自行测试，如 https://meting-dd.2333332.xyz/test
-
-## 部署
-
-部署 Meting-API 需要基本的计算机编程常识，如果您在部署过程中遇到无法解决的问题请到 issues 向我们提问，我们会尽快给您答复。
-
-如果部署成功，在你的域名后拼接上`/test`，理论上出现类似下图数据：
-
-![](assets/test.png)
-
-### 手动部署
-
-需要克隆项目到本地，node版本>=18。
-
+请求链接 (歌单): `https://met.api.xiaoguan.fit/api?type=playlist&id=9564899591`
+```json
+[
+...
+    {
+        "title": "关于梦想",
+        "author": "LKs",
+        "pic": "https://p2.music.126.net/ffXiAOBO7EAIIdiSd2Wa0w==/16578436324210904.jpg",
+        "url": "https://met.api.xiaoguan.fit/api?server=netease&type=url&id=406892255",
+        "lrc": "https://met.api.xiaoguan.fit/api?server=netease&type=lrc&id=406892255"
+    },
+...
+]
 ```
-npm i
-npm run build:all
+请求链接 (歌曲): `https://met.api.xiaoguan.fit/api?type=song&id=537787665`
+```json
+[
+    {
+        "title": "室内系的TrackMaker(YUNOMI)（翻自 nicamoq）",
+        "author": "Hanser",
+        "pic": "https://p2.music.126.net/9GAbSb_hlXPu66HWInJOww==/109951162846052486.jpg",
+        "url": "https://met.api.xiaoguan.fit/api?server=netease&type=url&id=537787665",
+        "lrc": "https://met.api.xiaoguan.fit/api?server=netease&type=lrc&id=537787665"
+    }
+]
 ```
-
-#### Node
-
-`node node.js`
-
-#### Deno
-
-`deno run --allow-net --allow-env dist/deno.js`
-
-或者直接下载action中的文件运行。
-
-### Docker部署
-
-运行下面的命令下载 Meting-API 镜像
-
+请求链接 (歌手): `https://met.api.xiaoguan.fit/api?type=artist&id=1049179`
+```json
+[
+    {
+        "title": "Moon Halo",
+        "author": "茶理理 / TetraCalyx / Hanser / HOYO-MiX",
+        "pic": "https://p1.music.126.net/ciLKATqflV2YWSV3ltE2Kw==/109951166159281275.jpg",
+        "url": "https://met.api.xiaoguan.fit/api?server=netease&type=url&id=1859652717",
+        "lrc": "https://met.api.xiaoguan.fit/api?server=netease&type=lrc&id=1859652717"
+    },
+...
+]
 ```
-docker pull intemd/meting-api:latest
-```
+请求资源(歌曲的url): `https://met.api.xiaoguan.fit/api?type=url&id=537787665`
+返回内容: 跳转到歌曲的音乐商的url
 
-然后运行 Meting-API 即可
-
-```
-docker run -d --name meting -p 3000:3000 intemd/meting-api:latest
-```
-
-### 部署到vercel
-
-比较出名，提供的域名被阻断，使用自有域名后速度尚可。冷启动速度一般。
-
-<a href="https://vercel.com/import/project?template=https://github.com/xiaoguan0/Meting-API"><img src="https://vercel.com/button" height="36"></a>
-
-一直下一步即可。
-
-### Deno Deploy
-
-类似Cloudflare Workers，但提供的域名未被阻断，使用Deno为runtime。
-
-fork本项目后新建一个[project](https://dash.deno.com/projects)，首先在设置中加一个Environment Variable，名称是OVERSEAS，值为1。接着link到你自己的项目，部署方式选action，Deno Deploy 的 project 的 name 需要与你自己的yml中设置的吻合。
-
-```yml
-        uses: denoland/deployctl@v1
-        with:
-          project: meting #这里要改成你的Deno Deploy的project的name
-          entrypoint: deno.js
-```
-
-接着在actions/publish/run workflow中勾选Deno即可。
-
-## 杂项
-
-### 反向代理
-
-对于很多HTTP框架的代理来说，只需设置X-Forwarded请求头或transparent proxy。但由于本项目使用了轻量化框架Hono，目前官方似乎还不支持。所以实际有用的的请求头只有`X-Forwarded-Host`。
-
-比如我用nginx想让请求 `http://localhost:8099/meting` 的流量全部转发到 `http://localhost:3000` ，直接这么写是不行的：
-
-```
-   server {
-      listen       8099;
-      server_name  localhost;
-
-      location /meting/ {
-         proxy_pass http://localhost:3000/;
-      }
-   }
-```
-
-正确写法：
-
-- nginx
-
-   ```
-   server {
-      listen       8099;
-      server_name  localhost;
-
-      location /meting/ {
-         proxy_pass http://localhost:3000/;
-         proxy_set_header X-Forwarded-Host $scheme://$host:$server_port/meting;
-      }
-   }
-   ```
-
-- caddy
-  
-  ```
-   http://localhost:8099 {
-         handle_path /meting* {
-                  reverse_proxy http://localhost:3000 {
-                        header_up X-Forwarded-Host {scheme}://{host}:{port}/meting
-                  }
-         }
-   }
-  ```
-
-### SSL证书
-
-在上面基础上改动即可。
-
-- nginx
-  ```
-      server {
-        listen       8099 ssl;
-        server_name  localhost;
-
-        ssl_certificate     ../server.crt;  # pem文件的路径
-        ssl_certificate_key  ../server.key; # key文件的路径
-        ssl_session_timeout 5m;
-        ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;
-        ssl_protocols TLSv1.2 TLSv1.3;
-        ssl_prefer_server_ciphers on;
-
-        location /meting/ {
-            proxy_pass http://localhost:3000/;
-            proxy_set_header X-Forwarded-Host $scheme://$host:$server_port/meting;
-        }
-      }
-  ```
-
-- caddy
-  ```
-   https://localhost:8099 {
-      tls ./server.crt ./server.key
-      handle_path /meting* {
-         reverse_proxy http://localhost:3000 {
-            header_up X-Forwarded-Host {scheme}://{host}:{port}/meting
-         }
-      }
-   }
-  ```
-
-## 使用
-
-在导入[前端插件](https://github.com/xizeyoupan/MetingJS)前，加入
-
-```
-<script>
-var meting_api='http://example.com/api?server=:server&type=:type&id=:id&auth=:auth&r=:r';
-</script>
-```
-
-比如
-
-```
-<script>
-var meting_api='http://localhost:3000/api?server=:server&type=:type&id=:id&auth=:auth&r=:r';
-</script>
-```
-
-即可。就这样吧，那我去看vtb了，88
-
-### 相关项目
-
-https://github.com/metowolf/MetingJS
-
-https://github.com/metowolf/Meting-API
-
-https://github.com/honojs/hono
-
-https://github.com/honojs/node-server
-
-https://github.com/camsong/fetch-jsonp
-
-https://github.com/Binaryify/NeteaseCloudMusicApi
-
-https://github.com/jsososo/QQMusicApi
+请求资源(歌曲的lrc): `https://met.api.xiaoguan.fit/api?type=lrc&id=537787665`
+返回内容: 歌词
