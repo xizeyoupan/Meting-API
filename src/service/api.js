@@ -6,13 +6,13 @@ export default async (ctx) => {
     const p = new Providers()
 
     const query = ctx.req.query()
-    const server = query.server || 'tencent'
+    const server = query.server || 'netease'
     const type = query.type || 'playlist'
-    const id = query.id || '7326220405'
+    const id = query.id || '9564899591'
 
     if (!p.get_provider_list().includes(server) || !p.get(server).support_type.includes(type)) {
         ctx.status(400)
-        return ctx.json({ status: 400, message: 'server 参数不合法', param: { server, type, id } })
+        return ctx.json({ status: 400, message: '参数不合法，请检查参数名以及参数是否正确', param: { server, type, id } })
     }
 
     let data = await p.get(server).handle(type, id)

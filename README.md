@@ -120,7 +120,7 @@ docker run -d --name meting -p 3000:3000 intemd/meting-api:latest
 
 比较出名，提供的域名被阻断，使用自有域名后速度尚可。冷启动速度一般。
 
-<a href="https://vercel.com/import/project?template=https://github.com/xizeyoupan/Meting-API"><img src="https://vercel.com/button" height="36"></a>
+<a href="https://vercel.com/import/project?template=https://github.com/xiaoguan0/Meting-API"><img src="https://vercel.com/button" height="36"></a>
 
 一直下一步即可。
 

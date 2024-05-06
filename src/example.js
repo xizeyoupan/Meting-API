@@ -1,18 +1,18 @@
 export default {
+    "netease": {
+        "playlist": { "show": true, "value": "9564899591" },
+        "song": { "show": true, "value": "537787665" },
+        "artist": { "show": true, "value": "1049179" },
+        "lrc": { "show": false, "value": "2015217630" },
+        "url": { "show": false, "value": "473403185" },
+        "search": { "show": true, "value": "404 Not Found - 平行四界Quadimension" },
+    },
     "tencent": {
         "playlist": { "show": true, "value": "7326220405" },
-        "song": { "show": true, "value": "002Rnpvi058Qdm" },
+        "song": { "show": true, "value": "001EZL8c2v6ZO2" },
         "lrc": { "show": false, "value": "000i26Sh1ZyiNU" },
         "pic": { "show": false, "value": "002Rnpvi058Qdm" },
         "url": { "show": false, "value": "002Rnpvi058Qdm" },
-    },
-    "netease": {
-        "playlist": { "show": true, "value": "6907557348" },
-        "song": { "show": true, "value": "473403185" },
-        "artist": { "show": true, "value": "12441107" },
-        "lrc": { "show": false, "value": "2015217630" },
-        "url": { "show": false, "value": "473403185" },
-        "search": { "show": true, "value": "KN33S0XXX" },
     },
     "ytmusic": {
         "playlist": { "show": true, "value": "RDCLAK5uy_l12ynH8dyLsBmE11ToAHLm9P04NS2i9ME" },
