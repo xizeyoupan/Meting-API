@@ -43,12 +43,12 @@ app.get('/', (c) => {
       </div>
       <div style="margin: 20px;">
         <div style="display: flex;">
-          <a href="https://github.com/xizeyoupan/Meting-API" style="text-decoration: none;"><img alt="Static Badge"
+          <a href="https://github.com/xiaoguan-dot/Meting-API" style="text-decoration: none;"><img alt="Github@xiaoguan-dot/Meting-API Static Badge"
               src="https://img.shields.io/badge/Github-Meting-green" class="tag"></a>
-          <a href="https://github.com/xizeyoupan/Meting-API" style="text-decoration: none;"><img alt="GitHub forks"
-              src="https://img.shields.io/github/forks/xizeyoupan/Meting-API" class="tag"></a>
-          <a href="https://github.com/xizeyoupan/Meting-API" style="text-decoration: none;"><img alt="GitHub Repo stars"
-              src="https://img.shields.io/github/stars/xizeyoupan/Meting-API" class="tag"></a>
+          <a href="https://github.com/xiaoguan-dot/Meting-API" style="text-decoration: none;"><img alt="Github@xiaoguan-dot/Meting-API forks"
+              src="https://img.shields.io/github/forks/xiaoguan-dot/Meting-API" class="tag"></a>
+          <a href="https://github.com/xiaoguan-dot/Meting-API" style="text-decoration: none;"><img alt="Github@xiaoguan-dot/Meting-API Repo stars"
+              src="https://img.shields.io/github/stars/xiaoguan-dot/Meting-API" class="tag"></a>
         </div>
     
         <div class="v-card">
