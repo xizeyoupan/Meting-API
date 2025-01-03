@@ -23,7 +23,7 @@ app.get('/', (c) => {
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <title>[在线]小关のMeting...</title>
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zui@3.0.0-alpha.4/dist/zui.css">
+      <link rel="stylesheet" href="https://unpkg.com/zui@3.0.0/dist/zui.css">
     </head>
     
     <body>
@@ -131,7 +131,7 @@ app.get('/', (c) => {
             </div>
           </div>
         </div>
-        <script src="https://cdn.jsdelivr.net/npm/zui@3.0.0-alpha.4/dist/zui.js"></script>
+        <script src="https://unpkg.com/zui@3.0.0/dist/zui.js"></script>
     </body>
     <!-- 暗色主题判断 -->
     <script>let isDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches; let element = document.getElementById('htmlid'); element.classList.toggle('dark', isDarkMode); element.classList.toggle('light', !isDarkMode);</script>
