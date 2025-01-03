@@ -8,7 +8,7 @@ let html = `
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>小关のMeting | 测试页面</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zui@3.0.0-alpha.4/dist/zui.css">
+    <link rel="stylesheet" href="https://unpkg.com/zui@3.0.0/dist/zui.css">
     <link rel="stylesheet" href="https://unpkg.com/aplayer/dist/APlayer.min.css">
 </head>
 
@@ -58,7 +58,7 @@ let html = `
         <button class="btn active" type="button" onclick="style_auto()" id="style_auto"><i
                 class="icon icon-desktop"></i></button>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/zui@3.0.0-alpha.4/dist/zui.js"></script>
+    <script src="https://unpkg.com/zui@3.0.0/dist/zui.js"></script>
     <script src="https://unpkg.com/aplayer/dist/APlayer.min.js"></script>
     <script>
         var meting_api = 'api?server=:server&type=:type&id=:id&auth=:auth&r=:r';
@@ -109,7 +109,7 @@ export const docs = (c) => {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>小关のMeting | Docs</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zui@3.0.0-alpha.4/dist/zui.css">
+  <link rel="stylesheet" href="https://unpkg.com/zui@3.0.0/dist/zui.css">
 </head>
 
 <body>
@@ -254,7 +254,7 @@ export const docs = (c) => {
       </div>
     </div>
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/zui@3.0.0-alpha.4/dist/zui.js"></script>
+  <script src="https://unpkg.com/zui@3.0.0/dist/zui.js"></script>
 </body>
 <script>
   // 主题设置
