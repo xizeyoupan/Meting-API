@@ -97,23 +97,23 @@ jobs:
           path: dist/deno.js
           retention-days: 1
 
-  deploy-to-deno:
-    needs: [upload-art]
-    if: ${{ inputs.deno ||  github.event_name == 'push' }}
-    runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-      contents: read
+  # deploy-to-deno:
+  #   needs: [upload-art]
+  #   if: ${{ inputs.deno ||  github.event_name == 'push' }}
+  #   runs-on: ubuntu-latest
+  #   permissions:
+  #     id-token: write
+  #     contents: read
 
-    steps:
-      - uses: actions/download-artifact@v3
-        with:
-          name: deno.js
-      - name: Upload to Deno Deploy
-        uses: denoland/deployctl@v1
-        with:
-          project: meting
-          entrypoint: deno.js
+  #   steps:
+  #     - uses: actions/download-artifact@v3
+  #       with:
+  #         name: deno.js
+  #     - name: Upload to Deno Deploy
+  #       uses: denoland/deployctl@v1
+  #       with:
+  #         project: meting
+  #         entrypoint: deno.js
 
   release-docker:
     needs: [test-docker]
