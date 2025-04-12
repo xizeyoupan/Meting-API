@@ -9,19 +9,24 @@ export const get_song_url = async (id, cookie = '') => {
         encodeType: 'flac',
     }
 
-    const res = await request(
-        'POST',
-        `https://interface.music.163.com/eapi/song/enhance/player/url/v1`,
-        data,
-        {
-            crypto: 'eapi',
-            url: '/api/song/enhance/player/url/v1',
-            cookie: {}
-        },
-    )
-    // console.log(res)
-    const url = res.data[0]?.url?.replace('http://', 'https://')
+    let res = {}
 
+    try {
+        res = await request(
+            'POST',
+            `https://interface.music.163.com/eapi/song/enhance/player/url/v1`,
+            data,
+            {
+                crypto: 'eapi',
+                url: '/api/song/enhance/player/url/v1',
+                cookie: {}
+            },
+        )
+    } catch (e) {
+        console.error(e)
+    }
+
+    const url = res.data && res.data[0]?.url?.replace('http://', 'https://')
     return url || `https://music.163.com/song/media/outer/url?id=${id}.mp3`
 
 }
@@ -47,5 +52,5 @@ export const get_song_info = async (id, cookie = '') => {
 
 
 // const res = await get_song_info('1874976923');
+// const res = await get_song_url('1874976923');
 // console.log(res)
-

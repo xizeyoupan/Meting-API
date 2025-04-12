@@ -4,12 +4,21 @@
 import crypto from 'crypto-browserify'
 import { Buffer } from 'buffer/index.js'
 
+// import crypto from 'node:crypto'
+// import {Buffer} from 'node:buffer'
+
 const iv = Buffer.from('0102030405060708')
 const presetKey = Buffer.from('0CoJUm6Qyw8W8jud')
 const linuxapiKey = Buffer.from('rFgB&h#%2?^eDg:Q')
 const base62 = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-const publicKey =
-  '-----BEGIN PUBLIC KEY-----\nMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDgtQn2JZ34ZC28NWYpAUd98iZ37BUrX/aKzmFbt7clFSs6sXqHauqKWqdtLkF2KexO40H1YTX8z2lSgBBOAxLsvaklV8k4cBFK9snQXE9/DDaFt6Rr7iVZMldczhC0JNgTz+SHXT6CBHuX3e9SdB1Ua44oncaTWz7OBGLbCiK45wIDAQAB\n-----END PUBLIC KEY-----'
+const publicKey =`-----BEGIN PUBLIC KEY-----
+MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDgtQn2JZ34ZC28NWYpAUd98iZ3
+7BUrX/aKzmFbt7clFSs6sXqHauqKWqdtLkF2KexO40H1YTX8z2lSgBBOAxLsvakl
+V8k4cBFK9snQXE9/DDaFt6Rr7iVZMldczhC0JNgTz+SHXT6CBHuX3e9SdB1Ua44o
+ncaTWz7OBGLbCiK45wIDAQAB
+-----END PUBLIC KEY-----
+`
+
 const eapiKey = 'e82ckenh8dichen8'
 
 const aesEncrypt = (buffer, mode, key, iv) => {
