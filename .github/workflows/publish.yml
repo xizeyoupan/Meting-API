@@ -67,7 +67,7 @@ jobs:
         run: docker save meting-api:latest | gzip -1cf > meting.tar.gz
 
       - name: Upload Docker image
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: meting.tar.gz
           path: meting.tar.gz
