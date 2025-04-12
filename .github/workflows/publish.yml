@@ -86,12 +86,12 @@ jobs:
       - run: npm i
       - run: npm run build:all
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: cloudflare-workers.js
           path: dist/cloudflare-workers.js
           retention-days: 1
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: deno.js
           path: dist/deno.js
