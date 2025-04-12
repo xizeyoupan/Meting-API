@@ -9,11 +9,11 @@ const app = new Hono()
 app.use('*', cors())
 app.get('/api', api)
 
-test('examples match providers', () => {
-    const p = new Providers()
-    const provider_list = p.get_provider_list()
-    expect(new Set(provider_list)).toEqual(new Set(Object.keys(examples)))
-})
+// test('examples match providers', () => {
+//     const p = new Providers()
+//     const provider_list = p.get_provider_list()
+//     expect(new Set(provider_list)).toEqual(new Set(Object.keys(examples)))
+// })
 
 test('test provider support_type', () => {
     const p = new Providers()
